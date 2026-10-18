@@ -482,7 +482,7 @@ footer{font-size:11px;color:var(--grigio);letter-spacing:.06em;padding:0 0 30px;
           <div class="scelti" id="r-scelti"></div>
         </div>
         <p class="intro" style="margin-top:6px" id="r-chiusa">Questo è il punto da cui partiremo nella Visione in Dialogo: mezz'ora con Domenico per mettere in fila i desideri e capire insieme la strada giusta.</p>
-        <div class="cta">
+        <div class="cta" id="r-cta">
           <a class="btn" id="r-prenota" href="#" target="_blank" rel="noopener">Scegli il giorno della Visione <span>→</span></a>
           <button type="button" class="btn chiaro" id="r-gia">Ho già prenotato</button>
         </div>
@@ -772,6 +772,13 @@ function ritratto(){
   u.searchParams.set("utm_source",S.parametri.utm_source||"questionario"); u.searchParams.set("utm_campaign",S.parametri.utm_campaign||VERSIONE); u.searchParams.set("utm_content",S.id);
   $("#r-prenota").href=u.toString();
   $("#r-prenota").onclick=()=>invia("clic_prenota");
+  // ?prenota=calendly prenota da solo; ?visione=fissata ha già l'appuntamento; altrimenti lo fissa lo studio
+  if(S.parametri.prenota!=="calendly"){
+    $("#r-cta").classList.add("nascosto");
+    $("#r-chiusa").textContent = S.parametri.visione==="fissata"
+      ? "Questo è il punto da cui partiremo nella Visione in Dialogo. Il tuo disegno sarà sul tavolo: niente domande già fatte, solo il tempo per le cose che contano."
+      : "Questo è il punto da cui partiremo. Lo leggiamo con attenzione e ti scriviamo noi per fissare la Visione in Dialogo: mezz'ora con Domenico per mettere in fila i desideri e capire insieme la strada giusta.";
+  }
   didascalia("Il tuo giardino, in pianta.");
   const copia=$("#giardino").cloneNode(true); copia.removeAttribute("id"); copia.querySelectorAll("[class]").forEach(e=>e.removeAttribute("class")); copia.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id")); $("#r-pianta").innerHTML=""; $("#r-pianta").appendChild(copia);
   $(".tavola").classList.add("fine");
