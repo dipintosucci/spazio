@@ -488,7 +488,7 @@ footer{font-size:11px;color:var(--grigio);letter-spacing:.06em;padding:0 0 30px;
       <section class="scena" data-scena="8">
         <div class="ricevuto" id="r-ricevuto">
           <span class="spunta" aria-hidden="true">✓</span>
-          <div><strong id="r-grazie-nome">Ricevuto. Grazie del tempo che ci hai dato.</strong><span>Le tue risposte sono arrivate allo studio.</span></div>
+          <div><strong id="r-grazie-nome">Ricevuto. Grazie del tempo che ci hai dedicato.</strong><span>Le tue risposte sono arrivate allo studio.</span></div>
         </div>
         <div class="occhiello">Il ritratto del tuo spazio</div>
         <h2 id="r-saluto">Ecco cosa ci hai raccontato</h2>
@@ -808,7 +808,7 @@ function ritratto(){
   $("#r-prenota").href=u.toString();
   $("#r-prenota").onclick=()=>invia("clic_prenota");
   // ?prenota=calendly prenota da solo; ?visione=fissata ha già l'appuntamento; altrimenti lo fissa lo studio
-  if(S.campi.nome) $("#r-grazie-nome").textContent=`Ricevuto, ${S.campi.nome}. Grazie del tempo che ci hai dato.`;
+  if(S.campi.nome) $("#r-grazie-nome").textContent=`Ricevuto, ${S.campi.nome}. Grazie del tempo che ci hai dedicato.`;
   if(S.parametri.prenota==="calendly") $("#r-passo2").innerHTML="<b>Scegli il giorno</b><span>Dal pulsante qui sopra, quando ti è più comodo.</span>";
   if(S.parametri.visione==="fissata") $("#r-passo2").innerHTML="<b>Il giorno è già fissato</b><span>Se qualcosa cambia, scrivici: lo spostiamo senza problemi.</span>";
   if(S.parametri.prenota!=="calendly"){
