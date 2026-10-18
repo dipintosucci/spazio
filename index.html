@@ -200,6 +200,22 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .scelti{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
 .scelti span{font-size:12px;border:1px solid var(--sabbia-scura);border-radius:999px;padding:4px 10px;color:#4a4840}
 .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+/* thank you */
+.ricevuto{display:flex;gap:14px;align-items:center;background:var(--inchiostro);color:var(--crema);padding:16px 20px;border-radius:4px;margin-bottom:28px;animation:entra .6s both}
+.ricevuto .spunta{flex:none;width:34px;height:34px;border-radius:50%;background:var(--oro);display:grid;place-items:center;font-size:16px}
+.ricevuto strong{display:block;font-family:var(--serif);font-weight:400;font-size:21px;line-height:1.2}
+.ricevuto span{font-size:13px;color:var(--sabbia)}
+.dopo{margin-top:44px;padding-top:30px;border-top:1px solid var(--sabbia)}
+.passi{list-style:none;counter-reset:p;display:grid;gap:22px;margin-top:6px}
+.passi li{counter-increment:p;display:grid;grid-template-columns:40px 1fr;gap:4px 14px}
+.passi li::before{content:counter(p);grid-row:span 2;width:32px;height:32px;border-radius:50%;border:1px solid var(--sabbia-scura);display:grid;place-items:center;font-family:var(--serif);font-size:18px;color:var(--sabbia-scura)}
+.passi b{font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.2}
+.passi span{font-size:14px;color:var(--grigio);max-width:34em}
+.frattempo{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px;margin-top:34px;font-size:14px;color:var(--grigio)}
+.frattempo span{flex-basis:100%}
+.frattempo a{font-family:var(--serif);font-size:20px;color:var(--inchiostro);text-decoration:none;border-bottom:1px solid var(--sabbia-scura)}
+.firma{margin-top:34px;font-family:var(--serif);font-style:italic;font-size:20px}
+.firma small{font-family:var(--sans);font-style:normal;font-size:11px;letter-spacing:.06em;color:var(--grigio)}
 footer{font-size:11px;color:var(--grigio);letter-spacing:.06em;padding:0 0 30px;text-align:center}
 .nascosto{display:none!important}
 </style>
@@ -470,6 +486,10 @@ footer{font-size:11px;color:var(--grigio);letter-spacing:.06em;padding:0 0 30px;
 
       <!-- 8 · il ritratto -->
       <section class="scena" data-scena="8">
+        <div class="ricevuto" id="r-ricevuto">
+          <span class="spunta" aria-hidden="true">✓</span>
+          <div><strong id="r-grazie-nome">Ricevuto. Grazie del tempo che ci hai dato.</strong><span>Le tue risposte sono arrivate allo studio.</span></div>
+        </div>
         <div class="occhiello">Il ritratto del tuo spazio</div>
         <h2 id="r-saluto">Ecco cosa ci hai raccontato</h2>
         <div class="ritratto">
@@ -487,6 +507,21 @@ footer{font-size:11px;color:var(--grigio);letter-spacing:.06em;padding:0 0 30px;
           <button type="button" class="btn chiaro" id="r-gia">Ho già prenotato</button>
         </div>
         <p class="nota nascosto" id="r-grazie" style="margin-top:16px;font-family:var(--serif);font-size:19px;font-style:italic">Perfetto. Ci vediamo nella Visione: il tuo disegno sarà sul tavolo.</p>
+
+        <div class="dopo" id="r-dopo">
+          <div class="occhiello">Cosa succede adesso</div>
+          <ol class="passi">
+            <li><b>Leggiamo quello che ci hai scritto</b><span>Con calma, insieme alle foto se le hai aggiunte. È il modo per arrivare preparati.</span></li>
+            <li id="r-passo2"><b>Ti scriviamo noi</b><span>Via email o WhatsApp, per proporti il giorno e l'ora della Visione in Dialogo.</span></li>
+            <li><b>La Visione in Dialogo</b><span>Mezz'ora in videochiamata con Domenico: si parte dal tuo ritratto, si mettono in fila i desideri e si capisce insieme la strada giusta.</span></li>
+          </ol>
+          <div class="frattempo">
+            <span>Nel frattempo, i giardini che abbiamo già completato:</span>
+            <a href="https://dipintosucci.com" target="_blank" rel="noopener">dipintosucci.com</a>
+            <a href="https://www.instagram.com/dipintosucci/" target="_blank" rel="noopener">Instagram</a>
+          </div>
+          <p class="firma">Domenico Dipinto<br><small>DipintoSucci · Studio di Architettura del Paesaggio</small></p>
+        </div>
       </section>
     </form>
   </main>
@@ -773,11 +808,14 @@ function ritratto(){
   $("#r-prenota").href=u.toString();
   $("#r-prenota").onclick=()=>invia("clic_prenota");
   // ?prenota=calendly prenota da solo; ?visione=fissata ha già l'appuntamento; altrimenti lo fissa lo studio
+  if(S.campi.nome) $("#r-grazie-nome").textContent=`Ricevuto, ${S.campi.nome}. Grazie del tempo che ci hai dato.`;
+  if(S.parametri.prenota==="calendly") $("#r-passo2").innerHTML="<b>Scegli il giorno</b><span>Dal pulsante qui sopra, quando ti è più comodo.</span>";
+  if(S.parametri.visione==="fissata") $("#r-passo2").innerHTML="<b>Il giorno è già fissato</b><span>Se qualcosa cambia, scrivici: lo spostiamo senza problemi.</span>";
   if(S.parametri.prenota!=="calendly"){
     $("#r-cta").classList.add("nascosto");
     $("#r-chiusa").textContent = S.parametri.visione==="fissata"
       ? "Questo è il punto da cui partiremo nella Visione in Dialogo. Il tuo disegno sarà sul tavolo: niente domande già fatte, solo il tempo per le cose che contano."
-      : "Questo è il punto da cui partiremo. Lo leggiamo con attenzione e ti scriviamo noi per fissare la Visione in Dialogo: mezz'ora con Domenico per mettere in fila i desideri e capire insieme la strada giusta.";
+      : "Questo è il punto da cui partiremo: niente domande già fatte, solo il tempo per le cose che contano.";
   }
   didascalia("Il tuo giardino, in pianta.");
   const copia=$("#giardino").cloneNode(true); copia.removeAttribute("id"); copia.querySelectorAll("[class]").forEach(e=>e.removeAttribute("class")); copia.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id")); $("#r-pianta").innerHTML=""; $("#r-pianta").appendChild(copia);
