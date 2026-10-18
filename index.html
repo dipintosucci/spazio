@@ -88,14 +88,22 @@ textarea:focus{border-color:var(--sabbia-scura)}
 .scelte.grandi .scelta[aria-pressed=true] small{color:var(--sabbia)}
 
 /* elementi del giardino */
-.gruppi{scroll-margin-top:120px;display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;margin:22px -20px 6px;padding-left:20px;scrollbar-width:none}
-.gruppi::-webkit-scrollbar{display:none}
-.gruppo-tab{flex:none;border:0;background:none;padding:8px 12px;font-size:13px;letter-spacing:.06em;cursor:pointer;color:var(--grigio);border-bottom:1px solid transparent;white-space:nowrap}
-.gruppo-tab[aria-selected=true]{color:var(--inchiostro);border-bottom-color:var(--inchiostro)}
-.gruppo-tab b{font-weight:500;color:var(--oro);margin-left:4px}
-.carte{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start;min-height:212px}
-@media (max-width:560px){.carte{grid-template-columns:1fr 1fr}.carta{min-height:84px}.carta .nome{font-size:18px}}
-.carta{position:relative;border:1px solid var(--sabbia);background:var(--carta);border-radius:4px;padding:18px 14px 14px;cursor:pointer;text-align:left;min-height:96px;display:flex;flex-direction:column;justify-content:flex-end;transition:transform .25s cubic-bezier(.2,.8,.2,1.3),background .2s,border-color .2s;animation:entra .4s both}
+.gruppi{margin:22px 0 0;border-top:1px solid var(--sabbia)}
+.famiglia{border-bottom:1px solid var(--sabbia)}
+.fam-testa{width:100%;display:flex;align-items:center;gap:14px;border:0;background:none;padding:16px 2px;cursor:pointer;text-align:left;scroll-margin-top:120px}
+.fam-testa .fam-nome{flex:1;font-family:var(--serif);font-size:23px;line-height:1.15}
+.fam-testa .fam-nome small{display:block;font-family:var(--sans);font-size:12px;color:var(--grigio);margin-top:2px}
+.fam-testa .fam-n{min-width:26px;height:26px;border-radius:13px;padding:0 8px;display:grid;place-items:center;font-size:12px;font-weight:500;background:var(--oro);color:var(--crema)}
+.fam-testa .fam-n:empty{display:none}
+.fam-testa .freccia{width:30px;height:30px;border-radius:50%;border:1px solid var(--sabbia-scura);display:grid;place-items:center;font-size:15px;transition:transform .3s}
+.famiglia.aperta .freccia{transform:rotate(45deg);background:var(--inchiostro);border-color:var(--inchiostro);color:var(--crema)}
+.famiglia .carte{display:none}
+.famiglia.aperta .carte{display:grid;padding:0 0 18px}
+.carte{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;align-content:start}
+@media (max-width:560px){.carte{grid-template-columns:1fr 1fr}.carta{min-height:78px}.carta .nome{font-size:18px}}
+.carta .cosa{display:block;font-family:var(--sans);font-size:12px;line-height:1.35;color:var(--grigio);margin-top:5px}
+.carta{position:relative;border:1px solid var(--sabbia);background:var(--carta);border-radius:4px;padding:18px 14px 14px;cursor:pointer;text-align:left;min-height:88px;display:flex;flex-direction:column;justify-content:flex-end;transition:transform .25s cubic-bezier(.2,.8,.2,1.3),background .2s,border-color .2s;animation:entra .4s both}
+.scena[data-scena="3"] .contatore{position:sticky;bottom:0;z-index:4;background:var(--crema);margin:0 -20px;padding:12px 20px;border-top:1px solid var(--sabbia)}
 .carta:hover{border-color:var(--sabbia-scura)}
 .carta:active{transform:scale(.97)}
 .carta .nome{font-family:var(--serif);font-size:20px;line-height:1.1}
@@ -300,11 +308,9 @@ footer{font-size:11px;color:var(--grigio);letter-spacing:.06em;padding:0 0 30px;
       <!-- 3 · le stanze -->
       <section class="scena" data-scena="3" data-tappa="Le stanze sono al loro posto.">
         <div class="occhiello">Stanza 3 · Le stanze</div>
-        <h2>Cosa vorresti <em>dentro</em>?</h2>
-        <p class="nota">Scegli tutto quello che ti piacerebbe, senza pensare a quanto costa: quello è il nostro lavoro. Ogni scelta compare in pianta.</p>
-        <div class="gruppi" id="gruppi" role="tablist"></div>
-        <div class="carte" id="carte"></div>
-        <button type="button" class="aggiungi" id="gruppo-dopo" style="margin-top:10px"></button>
+        <h2>Cosa vorresti nel tuo <em>giardino</em>?</h2>
+        <p class="nota">Apri le otto famiglie qui sotto e tocca tutto quello che ti piacerebbe, anche una cosa sola. Non pensare a quanto costa: quello è il nostro lavoro.</p>
+        <div class="gruppi" id="gruppi"></div>
         <div class="contatore"><strong id="n-scelti">0</strong> <span id="t-scelti">elementi scelti</span></div>
         <div class="domanda" style="margin-top:22px">
           <label for="altro_elemento">Manca qualcosa?<span class="aiuto">Facoltativo.</span></label>
@@ -544,26 +550,37 @@ $$(".scelte").forEach(g=>{
   g.querySelectorAll(".scelta").forEach(b=>b.setAttribute("aria-pressed","false"));
 });
 
-/* elementi */
+/* elementi: otto famiglie a fisarmonica, una aperta per volta */
+const SOTTO={acqua:"piscine, vasche, fontane",ombra:"pergole, vele, gazebo",fuoco:"bracieri, cucine, pranzo fuori",stare:"salotti, lettini, giochi",verde:"aiuole, alberi, prato, orto",superfici:"terrazze, percorsi, muretti",impianti:"acqua, luce, suono",arredo:"arredi, vasi, tessili"};
+const COSA={
+  "Piscina naturale o biolago":"si depura con le piante, senza cloro","Vasca idromassaggio esterna":"una spa all'aperto, per pochi","Specchio d'acqua o fontana":"acqua da guardare e ascoltare",
+  "Pergola":"struttura con travi, anche con rampicanti","Pergola bioclimatica":"lamelle che si aprono e si chiudono","Vela o tenda":"ombra leggera, si toglie d'inverno","Padiglione o gazebo":"un piccolo riparo coperto","Carport":"tettoia per l'auto","Serra o giardino d'inverno":"vetro, per stare fuori anche col freddo",
+  "Braciere":"fuoco basso attorno a cui sedersi","Camino esterno":"un focolare in muratura","Cucina outdoor":"piano, lavello e fuochi all'aperto",
+  "Solarium con lettini":"un posto al sole per sdraiarsi","Daybed o angolo lettura":"un letto da esterno, all'ombra","Casetta o ripostiglio":"per attrezzi, bici, cuscini",
+  "Aiuole fiorite":"fioriture che cambiano con le stagioni","Alberi importanti, già grandi":"piantati adulti, ombra da subito","Siepi e schermature per la privacy":"per non sentirsi guardati","Giardino a bassa manutenzione":"piante scelte per chiedere meno cure",
+  "Terrazza o pavimentazione":"la stanza pavimentata vicino a casa","Deck in legno":"pedana in legno","Ingresso carrabile":"il viale per entrare in auto","Muretti, gradoni, terrazzamenti":"per i dislivelli del terreno",
+  "Illuminazione d'atmosfera":"luce morbida per la sera","Domotica":"luci e irrigazione dal telefono","Recupero dell'acqua piovana":"una cisterna per irrigare",
+  "Coffee table":"il tavolino basso del salotto","Vasi e fioriere importanti":"grandi contenitori come elementi d'arredo"
+};
 let gruppoAttivo=0;
 function disegnaTab(){
   $("#gruppi").innerHTML = GRUPPI.map((g,i)=>{
-    const n=g.e.filter(x=>S.elementi.has(x)).length;
-    return `<button type="button" role="tab" class="gruppo-tab" aria-selected="${i===gruppoAttivo}" data-i="${i}">${g.t}${n?`<b>${n}</b>`:""}</button>`;
+    const n=g.e.filter(x=>S.elementi.has(x)).length, aperta=i===gruppoAttivo;
+    const carte=g.e.map((x,j)=>`<button type="button" class="carta" style="animation-delay:${j*40}ms" aria-pressed="${S.elementi.has(x)}" data-e="${esc(x)}" data-g="${i}"><span class="segno">${S.elementi.has(x)?"✓":"+"}</span><span class="nome">${x}${COSA[x]?`<span class="cosa">${COSA[x]}</span>`:""}</span></button>`).join("");
+    return `<div class="famiglia${aperta?" aperta":""}"><button type="button" class="fam-testa" data-i="${i}" aria-expanded="${aperta}"><span class="fam-nome">${g.t}<small>${SOTTO[g.k]}</small></span><span class="fam-n">${n||""}</span><span class="freccia">+</span></button><div class="carte">${aperta?carte:""}</div></div>`;
   }).join("");
 }
-function disegnaCarte(){
-  const g=GRUPPI[gruppoAttivo];
-  const dopo=GRUPPI[gruppoAttivo+1]; $("#gruppo-dopo").textContent = dopo ? "Poi: "+dopo.t+" →" : ""; $("#gruppo-dopo").classList.toggle("nascosto",!dopo);
-  $("#carte").innerHTML = g.e.map((x,i)=>`<button type="button" class="carta" style="animation-delay:${i*40}ms" aria-pressed="${S.elementi.has(x)}" data-e="${x.replace(/"/g,'&quot;')}"><span class="segno">${S.elementi.has(x)?"✓":"+"}</span><span class="nome">${x}</span></button>`).join("");
-}
-$("#gruppi").addEventListener("click",ev=>{const b=ev.target.closest(".gruppo-tab"); if(!b)return; gruppoAttivo=+b.dataset.i; disegnaTab(); disegnaCarte();});
-$("#carte").addEventListener("click",ev=>{
-  const c=ev.target.closest(".carta"); if(!c)return; const e=c.dataset.e;
+function disegnaCarte(){}
+$("#gruppi").addEventListener("click",ev=>{
+  const t=ev.target.closest(".fam-testa");
+  if(t){ const i=+t.dataset.i; gruppoAttivo = gruppoAttivo===i ? -1 : i; disegnaTab();
+    if(gruppoAttivo>=0) setTimeout(()=>$(`.fam-testa[data-i="${i}"]`).scrollIntoView({block:"start",behavior:"smooth"}),30); return; }
+  const c=ev.target.closest(".carta"); if(!c)return; const e=c.dataset.e, k=GRUPPI[+c.dataset.g].k;
   S.elementi.has(e)?S.elementi.delete(e):S.elementi.add(e);
   c.setAttribute("aria-pressed",S.elementi.has(e)); c.querySelector(".segno").textContent=S.elementi.has(e)?"✓":"+";
-  disegnaTab(); contaScelti(); disegnaGruppo(GRUPPI[gruppoAttivo].k);
-  if(S.elementi.has(e)) didascalia(frasiElemento[GRUPPI[gruppoAttivo].k]);
+  c.closest(".famiglia").querySelector(".fam-n").textContent = GRUPPI[+c.dataset.g].e.filter(x=>S.elementi.has(x)).length||"";
+  contaScelti(); disegnaGruppo(k);
+  if(S.elementi.has(e)) didascalia(frasiElemento[k]);
 });
 function contaScelti(){ const n=S.elementi.size; $("#n-scelti").textContent=n; $("#t-scelti").textContent = n===1?"elemento scelto":"elementi scelti"; }
 const frasiElemento={acqua:"Un po' d'acqua, e il giardino respira.",ombra:"Ecco un'ombra dove fermarsi.",fuoco:"Il fuoco: le serate si allungano.",stare:"Un posto per restare.",verde:"Il verde comincia a crescere.",superfici:"Si tracciano i percorsi.",impianti:"La luce, quando scende la sera.",arredo:"Gli ultimi dettagli, quelli che si toccano."};
@@ -780,7 +797,6 @@ function invia(stadio){
   fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(dati),keepalive:stadio!=="completo"}).catch(()=>{});
 }
 
-$("#gruppo-dopo").onclick=()=>{ gruppoAttivo++; disegnaTab(); disegnaCarte(); const t=$(`.gruppo-tab[data-i="${gruppoAttivo}"]`); t&&t.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"}); $("#gruppi").scrollIntoView({block:"start",behavior:"smooth"}); };
 addEventListener("scroll",()=>$(".tavola").classList.toggle("staccata",scrollY>60),{passive:true});
 aggiornaBarra(); contaScelti();
 </script>
