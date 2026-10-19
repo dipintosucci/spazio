@@ -811,7 +811,7 @@ function ritratto(){
   const fissata = S.parametri.visione!=="da-fissare";
   if(S.campi.nome) $("#r-grazie-nome").textContent=`Ricevuto, ${S.campi.nome}. Grazie del tempo che ci hai dedicato.`;
   if(S.parametri.prenota==="calendly") $("#r-passo2").innerHTML="<b>Scegli il giorno</b><span>Dal pulsante qui sopra, quando ti è più comodo.</span>";
-  else if(fissata) $("#r-passo2").innerHTML="<b>Il giorno è già fissato</b><span>Se qualcosa cambia, scrivici: lo spostiamo senza problemi.</span>";
+  else if(fissata) $("#r-passo2").innerHTML="<b>Il giorno è già fissato</b><span>È mezz'ora che teniamo solo per te, e ci arriviamo preparati sul tuo spazio.</span>";
   if(S.parametri.prenota!=="calendly"){
     $("#r-cta").classList.add("nascosto");
     $("#r-chiusa").textContent = fissata
