@@ -119,7 +119,9 @@ let tutti = [], giorni = 30;
 
 async function carica(){
   if(FONTE && CHIAVE){
-    try{ const r = await fetch(FONTE+(FONTE.includes("?")?"&":"?")+"chiave="+encodeURIComponent(CHIAVE)); tutti = await r.json(); }
+    try{ const r = await fetch(FONTE+(FONTE.includes("?")?"&":"?")+"chiave="+encodeURIComponent(CHIAVE)); tutti = await r.json();
+      // ogni valore arriva da sconosciuti: numeri restano numeri, il resto diventa testo
+      tutti = (Array.isArray(tutti)?tutti:[]).map(x=>Object.fromEntries(Object.entries(x).map(([k,v])=>[k,typeof v==="number"?v:String(v??"")]))); }
     catch(e){ document.getElementById("sotto").textContent="Non riesco a leggere i dati: controlla indirizzo e chiave."; return; }
   } else { tutti = prova(); }
   disegna();
@@ -184,7 +186,7 @@ function obiettivi(r){
   if(!t.length) return `<p class="vuoto">Non è arrivato alle irrinunciabili: in call si parte da «Cosa ti ha fatto scrivere proprio adesso?».</p>`;
   const righe = t.map((x,i)=>`<li><b>${esc(x.e)}</b>${x.v.length?` · ${x.v.map(v=>`${esc(v)} <span class="liv">${BAIN[v]||""}</span>`).join(", ")}`:" · <i>nessun perché indicato</i>"}</li>`).join("");
   const p=t[0], v=(p.v[0]||"").toLowerCase();
-  const dom = v ? `«Hai messo ${p.e.toLowerCase()} al primo posto e ci hai scritto: ${v}. Cosa cambierebbe, in concreto, nelle vostre giornate?»` : `«Hai messo ${p.e.toLowerCase()} al primo posto: perché proprio questo?»`;
+  const dom = v ? `«Hai messo ${esc(p.e.toLowerCase())} al primo posto e ci hai scritto: ${esc(v)}. Cosa cambierebbe, in concreto, nelle vostre giornate?»` : `«Hai messo ${esc(p.e.toLowerCase())} al primo posto: perché proprio questo?»`;
   return `<ol class="top">${righe}</ol><p class="dom">${dom} Poi «E cosa vale per voi, in euro o in tempo?» Si cerca un valore per ciascuna delle tre.</p>`;
 }
 function quantificazione(r){
@@ -192,7 +194,7 @@ function quantificazione(r){
   const so=num(r.serate_oggi), sd=num(r.serate_domani), anni=ANNI[r.restare];
   if(sd!=null && so!=null){
     const diff=sd-so;
-    q.push(`<li><b>Serate fuori:</b> da circa ${fmt(so)} a circa ${fmt(sd)} l'anno (${r.sere_oggi}→${r.sere_domani} sere a settimana, ${r.mesi_oggi}→${r.mesi_domani} mesi).${diff>0&&anni?` In ${anni} anni sono circa <b>${fmt(diff*anni)}</b> serate in più.`:""}<span class="dom">«Quelle sere oggi dove le passate? Quanto vale per voi una sera così, fuori casa?»</span></li>`);
+    q.push(`<li><b>Serate fuori:</b> da circa ${fmt(so)} a circa ${fmt(sd)} l'anno (${esc(r.sere_oggi)}→${esc(r.sere_domani)} sere a settimana, ${esc(r.mesi_oggi)}→${esc(r.mesi_domani)} mesi).${diff>0&&anni?` In ${anni} anni sono circa <b>${fmt(diff*anni)}</b> serate in più.`:""}<span class="dom">«Quelle sere oggi dove le passate? Quanto vale per voi una sera così, fuori casa?»</span></li>`);
   }
   if(r.ospiti_quanti && r.ospiti_quanti!=="Non riceviamo"){
     const volte=OSPITI_VOLTE[r.ospiti_volte];
@@ -237,7 +239,7 @@ function lead(R){
           <dt>Tecnici</dt><dd>${esc(r.supporto_tecnico||"–")}</dd>
           <dt>Ritratto</dt><dd>${esc(RITRATTI[r.ritratto]||"–")}</dd>
           <dt>Contatti</dt><dd>${esc(r.email||"")} · ${esc(r.telefono||"")}</dd>
-          ${r.foto?`<dt>Foto</dt><dd><a href="${esc(r.foto)}" target="_blank" rel="noopener">cartella su Drive</a></dd>`:""}
+          ${/^https:\/\/drive\.google\.com\//.test(r.foto)?`<dt>Foto</dt><dd><a href="${esc(r.foto)}" target="_blank" rel="noopener">cartella su Drive</a></dd>`:""}
         </dl>
         ${r.cosa_pesa?`<blockquote>«${esc(r.cosa_pesa)}»</blockquote>`:""}
         <div class="chips">${el.map(e=>`<span>${esc(e)}</span>`).join("")}${r.altro_elemento?`<span>+ ${esc(r.altro_elemento)}</span>`:""}</div>
