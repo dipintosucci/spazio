@@ -807,13 +807,14 @@ function ritratto(){
   u.searchParams.set("utm_source",S.parametri.utm_source||"questionario"); u.searchParams.set("utm_campaign",S.parametri.utm_campaign||VERSIONE); u.searchParams.set("utm_content",S.id);
   $("#r-prenota").href=u.toString();
   $("#r-prenota").onclick=()=>invia("clic_prenota");
-  // ?prenota=calendly prenota da solo; ?visione=fissata ha già l'appuntamento; altrimenti lo fissa lo studio
+  // di norma la Visione è già prenotata; ?visione=da-fissare la fissa lo studio; ?prenota=calendly prenota da solo
+  const fissata = S.parametri.visione!=="da-fissare";
   if(S.campi.nome) $("#r-grazie-nome").textContent=`Ricevuto, ${S.campi.nome}. Grazie del tempo che ci hai dedicato.`;
   if(S.parametri.prenota==="calendly") $("#r-passo2").innerHTML="<b>Scegli il giorno</b><span>Dal pulsante qui sopra, quando ti è più comodo.</span>";
-  if(S.parametri.visione==="fissata") $("#r-passo2").innerHTML="<b>Il giorno è già fissato</b><span>Se qualcosa cambia, scrivici: lo spostiamo senza problemi.</span>";
+  else if(fissata) $("#r-passo2").innerHTML="<b>Il giorno è già fissato</b><span>Se qualcosa cambia, scrivici: lo spostiamo senza problemi.</span>";
   if(S.parametri.prenota!=="calendly"){
     $("#r-cta").classList.add("nascosto");
-    $("#r-chiusa").textContent = S.parametri.visione==="fissata"
+    $("#r-chiusa").textContent = fissata
       ? "Questo è il punto da cui partiremo nella Visione in Dialogo. Il tuo disegno sarà sul tavolo: niente domande già fatte, solo il tempo per le cose che contano."
       : "Questo è il punto da cui partiremo: niente domande già fatte, solo il tempo per le cose che contano.";
   }
