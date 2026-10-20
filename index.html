@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-tydk6NLevtn/rajaBjPJ9Dy/zytT2H0maCwo43AzPDA='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-fcFz0tV19AHzEVdyFkwhabb08XmuNfFBNGTsK96hUAo='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex, nofollow">
 <title>Il tuo spazio · DipintoSucci</title>
@@ -360,7 +360,7 @@ footer a{color:inherit}
       <section class="scena attiva" data-scena="0">
         <div class="occhiello">Prima di Visioni in Dialogo</div>
         <h1>Raccontaci il tuo <em>spazio</em>.</h1>
-        <p class="intro">Cinque piccole stanze, circa sei minuti. Mentre rispondi, il tuo giardino prende forma in pianta. In Visioni in Dialogo partiremo da qui, e la mezz'ora sarà tutta per le cose che contano.</p>
+        <p class="intro">Cinque piccole stanze, circa sei minuti. Mentre rispondi, il tuo giardino prende forma in pianta. In Visioni in Dialogo partiremo da qui, e la mezz'ora sarà tutta per il tuo spazio.</p>
         <div class="riprendi nascosto" id="riprendi">
           <p id="riprendi-testo">Avevi già cominciato.</p>
           <button type="button" class="btn" id="riprendi-si">Riprendi da lì <span>→</span></button>
@@ -440,20 +440,20 @@ footer a{color:inherit}
           <span class="etichetta" id="et-part">Da dove partiamo?</span>
           <div class="scelte grandi" data-campo="partenza" data-singola required aria-labelledby="et-part">
             <button type="button" class="scelta">Da zero<small>terra nuda o cantiere</small></button>
-            <button type="button" class="scelta">Da rifare<small>c'è, ma va ripensato</small></button>
+            <button type="button" class="scelta">Da rifare<small>c'è già, e va ripensato</small></button>
             <button type="button" class="scelta">Da completare<small>una parte c'è già</small></button>
           </div>
         </div>
         <div class="domanda">
           <span class="etichetta" id="et-dis">C'è già un disegno per il giardino?</span>
           <div class="scelte" data-campo="disegno" data-singola required aria-labelledby="et-dis">
-            <button type="button" class="scelta">No, partiamo da voi</button>
+            <button type="button" class="scelta">Partiamo da voi</button>
             <button type="button" class="scelta">Qualche idea nostra, foto o schizzi</button>
             <button type="button" class="scelta">Sì, di un altro professionista</button>
           </div>
         </div>
         <div class="domanda">
-          <span class="etichetta">Ci mostri com'è oggi?<span class="aiuto">Facoltativo. Fino a 4 foto, anche fatte col telefono: bastano.</span></span>
+          <span class="etichetta">Ci mostri com'è oggi?<span class="aiuto">Facoltativo. Fino a 4 foto, anche col telefono. Se hai una planimetria, fotografa anche quella.</span></span>
           <label class="foto-zona" id="foto-zona">
             <input type="file" accept="image/jpeg,image/png,image/webp,image/*" multiple id="foto">
             <span style="font-family:var(--serif);font-size:19px">Tocca per aggiungere le foto</span>
@@ -473,8 +473,12 @@ footer a{color:inherit}
         <div class="gruppi" id="gruppi"></div>
         <div class="contatore" aria-live="polite"><strong id="n-scelti">0</strong> <span id="t-scelti">elementi scelti</span></div>
         <div class="domanda" style="margin-top:22px">
-          <label for="altro_elemento">Manca qualcosa?<span class="aiuto">Facoltativo.</span></label>
+          <label for="altro_elemento">C'è altro che immagini?<span class="aiuto">Facoltativo.</span></label>
           <input type="text" id="altro_elemento" name="altro_elemento" placeholder="Scrivilo qui" maxlength="200">
+        </div>
+        <div class="domanda">
+          <label for="riferimento">C'è un giardino, visto dal vivo o in foto, che ti è rimasto in mente?<span class="aiuto">Facoltativo. Anche solo dove l'hai visto.</span></label>
+          <input type="text" id="riferimento" name="riferimento" placeholder="Scrivilo qui" maxlength="200">
         </div>
         <div class="errore" role="alert"></div>
         <div class="comandi"><button type="button" class="indietro" data-indietro>← Indietro</button><button type="button" class="btn" data-avanti>Avanti <span>→</span></button></div>
@@ -530,7 +534,7 @@ footer a{color:inherit}
             <button type="button" class="scelta">Già la prossima estate</button>
             <button type="button" class="scelta">Entro un anno</button>
             <button type="button" class="scelta">Tra uno o due anni</button>
-            <button type="button" class="scelta">Non c'è una data</button>
+            <button type="button" class="scelta">La data la fissiamo insieme</button>
           </div>
         </div>
         <div class="domanda">
@@ -599,13 +603,13 @@ footer a{color:inherit}
         <h2 tabindex="-1" id="r-saluto">Ecco cosa ci hai raccontato</h2>
         <div class="ritratto">
           <div id="r-pianta" class="r-pianta"></div>
+          <p class="citazione nascosto" id="r-citazione"></p>
           <div class="passo">Il tuo spazio somiglia a</div>
           <div class="tipo" id="r-tipo"></div>
           <p id="r-testo"></p>
-          <p class="citazione nascosto" id="r-citazione"></p>
           <div class="scelti" id="r-scelti"></div>
         </div>
-        <p class="intro" style="margin-top:6px" id="r-chiusa">Da qui partiremo in Visioni in Dialogo: quello che ci hai raccontato lo conosciamo già, così la mezz'ora resta per le cose che contano.</p>
+        <p class="intro" style="margin-top:6px" id="r-chiusa">In Visioni in Dialogo lo leggiamo prima, così la mezz'ora è tutta per immaginarlo insieme.</p>
         <div class="cta nascosto" id="r-cta">
           <a class="btn" id="r-prenota" href="#" target="_blank" rel="noopener">Scegli il giorno di Visioni in Dialogo <span>→</span></a>
           <button type="button" class="btn chiaro" id="r-gia">Ho già prenotato</button>
@@ -616,8 +620,9 @@ footer a{color:inherit}
           <div class="occhiello">Cosa succede adesso</div>
           <ol class="passi">
             <li><b>Leggiamo quello che ci hai scritto</b><span>Con calma, insieme alle foto se le hai aggiunte. È il modo per arrivare preparati.</span></li>
-            <li id="r-passo2"><b>Il giorno è già fissato</b><span>È mezz'ora che teniamo solo per te.</span></li>
-            <li><b>Visioni in Dialogo</b><span>Mezz'ora in videochiamata con Domenico: si parte dal tuo ritratto e si capisce insieme se e come possiamo esserti utili, con quali fasi e quali tempi.</span></li>
+            <li id="r-passo2"><b>Il giorno è già fissato</b><span>Giorno, ora e link della videochiamata li trovi nella mail di conferma.</span></li>
+            <li><b>Visioni in Dialogo</b><span>Mezz'ora in videochiamata con Domenico: si parte dal tuo ritratto e si definisce insieme il percorso: cosa viene prima, con quali fasi e in quali tempi.</span></li>
+            <li><b>La presentazione del percorso</b><span>Quando il percorso è chiaro, fissiamo insieme l'incontro in cui ti presentiamo fasi, tempi e investimento.</span></li>
           </ol>
           <figure class="cartolina"><div class="cart-img"></div><figcaption><span>Ci vediamo in Visioni in Dialogo.</span><small>Un nostro giardino: il salotto sul prato, accanto all'acqua.</small></figcaption></figure>
           <div class="frattempo">
@@ -640,7 +645,7 @@ const CALENDLY = "https://calendly.com/dipintosucci/radici";
 const VERSIONE = "q2-2026-10";
 const QUIETO = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ===== i 43 elementi (lista del 16/10/2026) ===== */
+/* ===== i 46 elementi (lista del 16/10/2026, arredo rivisto il 19/10) ===== */
 const GRUPPI = [
   {k:"acqua",    t:"Acqua",                 e:["Piscina","Piscina naturale o biolago","Vasca idromassaggio esterna","Specchio d'acqua o fontana","Doccia esterna"]},
   {k:"ombra",    t:"Ombra e riparo",        e:["Pergola","Pergola bioclimatica","Vela o tenda","Padiglione o gazebo","Carport","Serra o giardino d'inverno"]},
@@ -752,7 +757,7 @@ $("#foto").addEventListener("change",async ev=>{
   const err=$("#foto-errore"); err.textContent="";
   for(const f of [...ev.target.files].slice(0,4-S.foto.length)){
     try{ S.foto.push(await riduci(f)); }
-    catch(e){ err.textContent=`«${f.name.slice(0,40)}» non si apre qui, forse è in un formato del telefono che il browser non legge. Prova con un'altra foto, oppure portala a Visioni in Dialogo.`; }
+    catch(e){ err.textContent=`«${f.name.slice(0,40)}» ha un formato che il browser fatica ad aprire. Scegline un'altra, oppure la guardiamo insieme in Visioni in Dialogo.`; }
   }
   ev.target.value=""; mostraFoto();
 });
@@ -793,11 +798,11 @@ function reazione(campo){
 }
 
 /* ===== il perché: tre irrinunciabili e cosa darebbero ===== */
-const VALORI = ["Stare insieme a chi amo","Ricevere amici e ospiti","Rilassarmi e staccare","Far crescere i bambini all'aria aperta","Privacy e intimità","Meno fatica e manutenzione","Vivere fuori più mesi l'anno","Bellezza da guardare ogni giorno","Dare valore alla casa","Un luogo che resti nel tempo"];
+const VALORI = ["Stare insieme a chi amo","Ricevere amici e ospiti","Rilassarmi e staccare","Far crescere i bambini all'aria aperta","Privacy e intimità","Meno fatica e manutenzione","Vivere fuori più mesi l'anno","Bellezza da guardare ogni giorno","Dare valore alla casa","Un luogo che resti nel tempo","Spendere una volta sola, senza rifare"];
 function disegnaPodio(){
   S.top3 = S.top3.filter(e=>S.elementi.has(e));
   const el=[...S.elementi];
-  if(!el.length){ $("#podio").innerHTML='<p class="nota">Non hai scelto elementi: passa pure avanti.</p>'; $("#valori").innerHTML=""; return; }
+  if(!el.length){ $("#podio").innerHTML='<p class="nota">Hai scritto il tuo elemento: passa pure avanti.</p>'; $("#valori").innerHTML=""; return; }
   $("#podio").innerHTML = el.map(e=>{ const r=S.top3.indexOf(e)+1; return `<button type="button" class="${r?"r"+r:(S.top3.length>=3?"spento":"")}" data-e="${esc(e)}" aria-pressed="${!!r}"><span class="rango" aria-hidden="true">${r||""}</span>${esc(e)}${r?`<span class="solo-lettori">, al posto ${r}</span>`:""}</button>`; }).join("");
   $("#valori").innerHTML = S.top3.map((e,i)=>`<div class="valore-blocco domanda"><span class="etichetta">${["La prima","La seconda","La terza"][i]}, <b>${esc(e.toLowerCase())}</b>: cosa ti darebbe?<span class="aiuto">Scegli una o più risposte.</span></span><div class="scelte" data-val="${esc(e)}">${VALORI.map(v=>`<button type="button" class="scelta" aria-pressed="${(S.valori[e]||[]).includes(v)}">${v}</button>`).join("")}</div></div>`).join("");
 }
@@ -828,7 +833,7 @@ function mostraCursori(){
   const o=serate(n.sere_oggi,n.mesi_oggi), d=serate(n.sere_domani,n.mesi_domani), diff=d-o;
   $("#bilancio").innerHTML = diff>0
     ? `<b>+${diff}</b><span>serate fuori in più, ogni anno.</span><small>Da circa ${o} a circa ${d} serate l'anno.</small>`
-    : `<b>${d}</b><span>serate fuori, ogni anno.</span><small>Più o meno come oggi.</small>`;
+    : `<b>${d}</b><span>serate fuori, ogni anno.</span><small>Le stesse serate, vissute meglio.</small>`;
   disegnaVita();
 }
 $$("[data-num]").forEach(r=>{ const tocca=()=>{ S.num[r.dataset.num]=+r.value; mostraCursori(); salvaBozza(); };
@@ -974,7 +979,7 @@ function mostraRitratto(){
   let testo=RITRATTI[top].p; if(S.campi.ritratto_secondo) testo+=` Con un'anima di ${ANIMA[S.campi.ritratto_secondo]}.`;
   if(S.top3.length) testo+=` Al primo posto: ${S.top3[0].toLowerCase()}.`;  $("#r-testo").textContent=testo;
   const pesa=(S.campi.cosa_pesa||"").trim();
-  if(pesa){ $("#r-citazione").textContent="«"+pesa+"» Partiamo da qui."; $("#r-citazione").classList.remove("nascosto"); }
+  if(pesa){ $("#r-citazione").textContent="«"+pesa+"» Da qui partiamo."; $("#r-citazione").classList.remove("nascosto"); }
   $("#r-scelti").innerHTML=[...S.elementi].map(e=>`<span>${esc(e)}</span>`).join("");
   if(S.campi.nome) $("#r-grazie-nome").textContent=`Ricevuto, ${S.campi.nome}. Grazie del tempo che ci hai dedicato.`;
   // di norma Visioni in Dialogo è già prenotata; ?visione=da-fissare la fissa lo studio; ?prenota=calendly prenota da solo
@@ -984,11 +989,14 @@ function mostraRitratto(){
     u.searchParams.set("utm_source",S.parametri.utm_source||"questionario"); u.searchParams.set("utm_campaign",S.parametri.utm_campaign||VERSIONE); u.searchParams.set("utm_content",S.id);
     $("#r-prenota").href=u.toString(); $("#r-prenota").onclick=()=>segna("clic_prenota");
     $("#r-cta").classList.remove("nascosto");
-    $("#r-chiusa").textContent="Questo è il punto da cui partiremo in Visioni in Dialogo: mezz'ora con Domenico per mettere in fila i desideri e capire insieme la strada giusta.";
+    $("#r-chiusa").textContent="In Visioni in Dialogo lo leggiamo prima, così la mezz'ora è tutta per immaginarlo insieme.";
     $("#r-passo2").innerHTML="<b>Scegli il giorno</b><span>Dal pulsante qui sopra, quando ti è più comodo.</span>";
   } else if(S.parametri.visione==="da-fissare"){
-    $("#r-chiusa").textContent="Da qui partiremo in Visioni in Dialogo: quello che ci hai raccontato lo conosciamo già, così la mezz'ora resta per le cose che contano.";
+    $("#r-chiusa").textContent="In Visioni in Dialogo lo leggiamo prima, così la mezz'ora è tutta per immaginarlo insieme.";
     $("#r-passo2").innerHTML="<b>Ti scriviamo noi entro 24 ore</b><span>Via email o WhatsApp, per proporti il giorno e l'ora di Visioni in Dialogo.</span>";
+  } else if(S.campi.decide==="altri"){
+    const nomi=persone().map(x=>x.nome).filter(Boolean);
+    if(nomi.length) $("#r-passo2 span").textContent+=` Inoltrala a ${nomi.join(", ").replace(/, ([^,]*)$/," e $1")}: in Visioni in Dialogo le scelte si fanno insieme.`;
   }
   didascalia("Il tuo giardino, in pianta.");
   const copia=copiaPianta(); $("#r-pianta").innerHTML=""; $("#r-pianta").appendChild(copia);
@@ -1097,10 +1105,10 @@ async function concludi(){
   const esito=await spedisci(pacchetto("completo"),4);
   b.disabled=false; $$("[data-indietro]").forEach(x=>x.disabled=false); inviando=false; occupato=false;
   if(esito!=="ok"){
-    stato("Riprova <span>→</span>");
+    stato("Invia di nuovo <span>→</span>");
     err.textContent = esito==="rifiutato"
-      ? "Lo studio non riesce a registrare le risposte. Riprova tra qualche minuto, oppure scrivici a info@dipintosucci.com: le tue risposte restano salve su questo dispositivo."
-      : "Non riusciamo a raggiungere lo studio: forse la connessione è debole. Le tue risposte restano salve su questo dispositivo: riprova tra poco.";
+      ? "Le tue risposte sono salve su questo dispositivo. Tra qualche minuto premi Invia di nuovo, oppure scrivici a info@dipintosucci.com."
+      : "La connessione sembra debole. Le tue risposte sono salve su questo dispositivo: tra poco premi Invia di nuovo.";
     err.scrollIntoView({block:"center"}); return;
   }
   annuncio.textContent="Ricevuto.";
