@@ -35,6 +35,17 @@
     var flusso = new Blob([dati]).stream().pipeThrough(new CompressionStream("deflate-raw"));
     return new Response(flusso).arrayBuffer().then(function (ab) { return "z." + b64urlDaByte(new Uint8Array(ab)); });
   }
+  function apriCifrata(codice, chiave) {
+    return fetch("c/" + codice + ".json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(); return r.text(); }).then(function (t) {
+      var tutto = byteDaB64url(t.trim());
+      return crypto.subtle.importKey("raw", byteDaB64url(chiave), "AES-GCM", false, ["decrypt"]).then(function (k) {
+        return crypto.subtle.decrypt({ name: "AES-GCM", iv: tutto.slice(0, 12) }, k, tutto.slice(12));
+      });
+    }).then(function (ab) {
+      var flusso = new Blob([ab]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+      return new Response(flusso).text().then(JSON.parse);
+    });
+  }
   function decodifica(t) {
     var tipo = t.slice(0, 2), u8 = byteDaB64url(t.slice(2));
     if (tipo === "j.") return Promise.resolve(JSON.parse(new TextDecoder().decode(u8)));
@@ -495,7 +506,12 @@
     }).catch(function () { main.appendChild(el("p", { testo: "Il link non è completo." })); $("comandi").hidden = true; });
   } else {
     var prosegui = function () { avviaCompilazione(); };
-    if (h.k) {
+    if (h.c && h.c.indexOf(".") > 0) {
+      var parti = h.c.split(".");
+      apriCifrata(parti[0], parti[1]).then(function (k) {
+        conf = Object.assign(conf, k); chiaveMemoria = "cura-risposte-" + parti[0]; prosegui();
+      }).catch(function () { main.appendChild(el("p", { testo: "Il link non è completo: prova a riaprirlo dal messaggio, oppure scrivici." })); $("comandi").hidden = true; });
+    } else if (h.k) {
       decodifica(h.k).then(function (k) {
         conf = Object.assign(conf, k); chiaveMemoria = "cura-risposte-" + h.k.slice(-12); prosegui();
       }).catch(prosegui);
