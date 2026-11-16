@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>La cura del tuo giardino · DipintoSucci</title>
+<style>
+@font-face{font-family:"Archivo";font-weight:300;font-display:swap;src:url(../font/ArchivoLight.woff2) format("woff2")}
+@font-face{font-family:"Archivo";font-weight:400;font-display:swap;src:url(../font/ArchivoRegular.woff2) format("woff2")}
+@font-face{font-family:"Archivo";font-weight:500 600;font-display:swap;src:url(../font/ArchivoMedium.woff2) format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-weight:400;font-display:swap;src:url(../font/CormorantGaramondRegular.woff2) format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-weight:500 600;font-display:swap;src:url(../font/CormorantGaramondMedium.woff2) format("woff2")}
+@font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:400;font-display:swap;src:url(../font/CormorantGaramondItalic.woff2) format("woff2")}
+:root{
+  --crema:#F7F2E8;--carta:#FBF8F2;--sabbia:#E1D5BB;--sabbia-chiara:#EFE6D2;--sabbia-scura:#B39C73;
+  --sabbia-testo:#806B47;--inchiostro:#2B2A26;--grigio:#6F6A5E;--salvia:#8AA5A0;--oro:#B88A0C;
+  --serif:"Cormorant Garamond",Georgia,serif;--sans:"Archivo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--crema);color:var(--inchiostro)}
+body{font-family:var(--serif);font-size:19px;line-height:1.45;-webkit-text-size-adjust:100%}
+.pagina{max-width:640px;margin:0 auto;padding:20px 16px 120px}
+header{display:flex;align-items:center;justify-content:space-between;padding:4px 0 18px}
+header img{height:30px;width:auto}
+header .passo{font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--sabbia-testo)}
+.barra{height:2px;background:var(--sabbia-chiara);margin:0 0 28px}
+.barra i{display:block;height:100%;width:0;background:var(--sabbia-scura);transition:width .4s}
+.etichetta{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--sabbia-testo);margin:0 0 10px}
+h1{font-weight:400;font-size:40px;line-height:1.08;margin:0 0 18px}
+h2{font-weight:400;font-size:31px;line-height:1.12;margin:0 0 10px}
+h3{font-weight:500;font-size:22px;line-height:1.2;margin:0 0 12px}
+p{margin:0 0 14px}
+.intro{color:var(--grigio)}
+.domanda{background:var(--carta);border:1px solid var(--sabbia-chiara);border-radius:4px;padding:20px 18px;margin:0 0 16px}
+.domanda.vuota{border-color:var(--sabbia)}
+.opzioni{display:flex;flex-direction:column;gap:8px}
+.opz{appearance:none;border:1px solid var(--sabbia);background:transparent;color:var(--inchiostro);font-family:var(--sans);font-size:15px;line-height:1.35;text-align:left;padding:13px 14px;border-radius:3px;cursor:pointer;transition:background .15s,border-color .15s}
+.opz small{display:block;font-size:13px;color:var(--grigio);margin-top:3px}
+.opz[aria-pressed="true"]{background:var(--inchiostro);border-color:var(--inchiostro);color:var(--carta)}
+.opz[aria-pressed="true"] small{color:var(--sabbia)}
+.opz.delega{border-style:dashed}
+.riga{padding:12px 0;border-top:1px solid var(--sabbia-chiara)}
+.riga:first-of-type{border-top:0;padding-top:0}
+.riga .nome{font-family:var(--sans);font-size:14px;font-weight:500;margin:0 0 8px}
+.scala{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.scala .opz{text-align:center;font-size:12px;padding:10px 2px;min-height:58px;display:flex;align-items:center;justify-content:center}
+.seg{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.seg .opz{font-size:13.5px;padding:10px 8px;text-align:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips .opz{font-size:14px;padding:9px 13px;border-radius:999px}
+textarea{width:100%;min-height:110px;font-family:var(--serif);font-size:19px;padding:12px;border:1px solid var(--sabbia);background:var(--crema);border-radius:3px;color:var(--inchiostro);resize:vertical}
+.livelli{margin:0 0 18px}
+.livelli div{padding:10px 0;border-top:1px solid var(--sabbia-chiara)}
+.livelli b{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.04em}
+.livelli span{display:block;font-size:17px;color:var(--grigio)}
+.nota{font-family:var(--sans);font-size:12.5px;color:var(--grigio);margin:6px 0 0}
+.comandi{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(transparent,var(--crema) 30%);padding:26px 16px calc(16px + env(safe-area-inset-bottom))}
+.comandi .dentro{max-width:640px;margin:0 auto;display:flex;gap:10px}
+.btn{appearance:none;border:1px solid var(--inchiostro);background:var(--inchiostro);color:var(--carta);font-family:var(--sans);font-size:13px;letter-spacing:.14em;text-transform:uppercase;padding:16px 18px;border-radius:3px;cursor:pointer;flex:1}
+.btn.chiaro{background:transparent;color:var(--inchiostro);flex:0 0 auto}
+.btn[hidden]{display:none}
+.copertina{padding-top:24px}
+.copertina .righe{font-family:var(--sans);font-size:13px;color:var(--grigio);border-top:1px solid var(--sabbia);margin-top:22px;padding-top:14px}
+.copertina .righe div{padding:6px 0}
+.riepilogo dt{font-family:var(--sans);font-size:12px;letter-spacing:.06em;color:var(--sabbia-testo);margin-top:12px}
+.riepilogo dd{margin:2px 0 0;font-size:18px}
+.avviso{font-family:var(--sans);font-size:13px;color:var(--sabbia-testo);margin:0 0 14px}
+/* lettura dello studio */
+.tab{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13px;margin:0 0 22px}
+.tab th{text-align:left;font-weight:500;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--sabbia-testo);border-bottom:1px solid var(--sabbia);padding:6px 6px 6px 0}
+.tab td{border-bottom:1px solid var(--sabbia-chiara);padding:8px 6px 8px 0;vertical-align:top}
+.tab td.cod{color:var(--sabbia-testo);white-space:nowrap}
+.tab td.vuoto{color:var(--sabbia-scura)}
+.indici{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 22px}
+.indici div{background:var(--carta);border:1px solid var(--sabbia-chiara);padding:12px 10px;border-radius:3px}
+.indici b{display:block;font-family:var(--serif);font-weight:400;font-size:32px;line-height:1}
+.indici span{font-family:var(--sans);font-size:11px;color:var(--grigio)}
+.segnali li{font-family:var(--sans);font-size:14px;margin:0 0 8px}
+.citazione{font-size:20px;border-left:2px solid var(--sabbia-scura);padding-left:12px;margin:0 0 22px}
+@media (max-width:380px){h1{font-size:34px}.scala .opz{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="pagina">
+  <header><img src="../logo.png" alt="DipintoSucci"><span class="passo" id="passo"></span></header>
+  <div class="barra"><i id="avanzamento"></i></div>
+  <main id="contenuto"></main>
+</div>
+<div class="comandi" id="comandi">
+  <div class="dentro">
+    <button class="btn chiaro" id="indietro" type="button">Indietro</button>
+    <button class="btn" id="avanti" type="button">Inizia</button>
+  </div>
+</div>
+<script src="domande.js"></script>
+<script src="cura.js"></script>
+</body>
+</html>
