@@ -347,6 +347,9 @@
     if (valore("P23") === 1) mesi[11].push("raccolta delle foglie");
     (risposte.P25 || []).forEach(function (k) { var mm = CURA.regole.R8.mesi[k]; if (mm) mesi[mm].push("passaggio prima di: " + k); });
     if (valore("P33") === 1) [5, 9].forEach(function (mm) { mesi[mm].push("arbusto della fotocellula"); });
+    if (valore("P41") === 1) CURA.regole.R10.mesi.forEach(function (mm) { mesi[mm].push("trattamento della siepe contro la cocciniglia"); });
+    var prato = valore("P47"); if (prato === 1) { mesi[9].push("prato: arieggiatura e risemina dove è rado"); mesi[3].push("prato: concimazione di primavera"); mesi[10].push("prato: concimazione d'autunno"); }
+    if (risposte.P48 === 3) CURA.regole.R9.mesi.forEach(function (mm) { mesi[mm].push("taglio del prato, ogni due-tre settimane"); });
     var uscite = Object.keys(mesi).filter(function (k) { return mesi[k].length; }).length;
 
     // sistemazione
@@ -361,6 +364,16 @@
     if (valore("P46") === 1) sist.push("parte laterale: togliere tutto e continuare la copertura, a preventivo");
     if (valore("P46") === 2) sist.push("parte laterale: togliere sassi e cortecce, tenere le graminacee, a preventivo");
     if (valore("P30") === 2) sist.push("pozzetti da rivedere: si guardano insieme al primo passaggio");
+    if (valore("P26") === 1) sist.push("piante mancanti o sofferenti: sostituzione con la stessa pianta, dopo averne cercato la causa, a preventivo");
+    if (valore("P26") === 2) sist.push("piante mancanti o sofferenti: sostituzione con piante più robuste scelte dallo studio, dopo averne cercato la causa, a preventivo");
+    if (prato === 2) sist.push("prato: zolle dove è rovinato, a preventivo");
+    if (prato === 3) sist.push("prato: riduzione e piante che non chiedono il taglio dove soffre, a preventivo");
+    var sole = risposte.P38;
+    if (sole === 1) sist.push("angolo al sole: fornitura dell'ombrellone");
+    if (sole === 2) sist.push("angolo al sole: vela ombreggiante, a preventivo");
+    if (sole === 3) sist.push("angolo al sole: albero da ombra, messa a dimora tra novembre e marzo, a preventivo");
+    if (sole === 4) sist.push("angolo al sole: struttura fissa tipo pergola, a preventivo");
+    if (sole === 0) sist.push("angolo al sole: proposta dello studio dopo un sopralluogo nell'ora di sole peggiore");
     var cane = conf.c || "l'animale";
     if (risposte.P34 === 1 || risposte.P34 === 2) sist.push("picchetti del telo interrati e verificati uno per uno (" + cane + ")");
     if ((risposte.P37 || []).length) sist.push("percorsi di " + cane + " (" + risposte.P37.join(", ") + "): niente piante nuove, liberi o rinforzati, a preventivo");
@@ -378,6 +391,9 @@
     if (valore("P35") === 2) crit.push("Dove l'impianto non arriva bagna il cliente: calendario delle bagnature consegnato con il programma");
     var alt = valore("P42"); if (alt) crit.push("Siepe " + ["", "più bassa di oggi", "all'altezza di oggi", "più alta di oggi"][alt] + ": misura presa al primo passaggio e scritta nel rapporto");
     if (valore("P44") === 1) crit.push("Cycas: tronco libero alla vista, nessun pollone");
+    if (risposte.P41 !== undefined) crit.push("Siepe senza cocciniglia visibile" + (valore("P41") === 1 ? ", trattamenti a febbraio e a maggio" : ", controllata a ogni passaggio"));
+    if (prato && prato !== 4) crit.push("Prato fitto e uniforme, senza chiazze, visto da: " + daPV);
+    if (risposte.P48 === 1 || risposte.P48 === 2) crit.push("Altezza di taglio del prato consigliata per stagione, scritta nel programma");
     if (risposte.P34 === 1 || risposte.P34 === 2) crit.push("Con " + cane + " in giardino: solo prodotti sicuri per gli animali, nessuna esca per lumache, nessun picchetto in vista, residui portati via in giornata (R7)");
     if ((risposte.P37 || []).length) crit.push("Nessuna pianta nuova sui percorsi di " + cane);
     crit.push("Foto del rapporto scattate da: " + daPV);

@@ -8,7 +8,7 @@
 
 var CURA = {};
 
-CURA.versione = "1.1 · 16/11/2026";
+CURA.versione = "1.2 · 17/11/2026";
 
 /* Elementi e zone di serie, se il link del cliente non ne porta */
 CURA.zoneDiSerie = ["Le aiuole", "Il prato", "Le siepi", "Il resto del giardino"];
@@ -63,6 +63,30 @@ CURA.passi = [
         effetto: "Decide i passaggi all'anno della zona e le operazioni di ogni passaggio (vedi regole R1 e R2)."
       },
       {
+        id: "P47", tipo: "scelta", se: "prato",
+        parametro: "Prato, sistemazione",
+        testo: "Il prato, come lo vorresti?",
+        opzioni: [
+          { v: 1, t: "Lo rimettiamo in forma: arieggiatura, risemina dove è rado, concime" },
+          { v: 2, t: "Lo rifacciamo a zolle dove è rovinato" },
+          { v: 3, t: "Ne teniamo meno: dove soffre mettiamo piante che non chiedono il taglio" },
+          { v: 4, t: "Va bene così" },
+          { v: 0, t: "Decidete voi" }
+        ],
+        effetto: "1: rigenerazione a settembre o a marzo, poi concimazione in primavera e in autunno. 2: zolle nella sistemazione, a preventivo. 3: riduzione del prato nella sistemazione, a preventivo. Criterio: prato fitto e uniforme, senza chiazze."
+      },
+      {
+        id: "P48", tipo: "scelta", se: "prato",
+        parametro: "Prato, taglio",
+        testo: "Il taglio dell'erba:",
+        opzioni: [
+          { v: 1, t: "Lo faccio io" },
+          { v: 2, t: "C'è un robot" },
+          { v: 3, t: "Lo fate voi nei passaggi" }
+        ],
+        effetto: "1-2: altezza di taglio consigliata scritta nel programma. 3: taglio da aprile a ottobre, ogni due-tre settimane (R9)."
+      },
+      {
         id: "P25", tipo: "multi",
         parametro: "Momenti da preparare",
         testo: "Ci sono momenti dell'anno in cui il giardino deve dare il meglio?",
@@ -93,6 +117,17 @@ CURA.passi = [
           { v: 0, t: "Decidete voi" }
         ],
         effetto: "1: si infittisce l'impianto (costo in più, da proporre). 2: si scrive nel programma la stagione in cui la copertura è chiusa. 3: nessuna azione."
+      },
+      {
+        id: "P26", tipo: "scelta", se: "sostituzioni",
+        parametro: "Piante da sostituire",
+        testo: "Le piante che non sono partite o che soffrono:",
+        opzioni: [
+          { v: 1, t: "Le sostituiamo con la stessa pianta" },
+          { v: 2, t: "Le sostituiamo con una più robusta, anche diversa" },
+          { v: 0, t: "Decidete voi" }
+        ],
+        effetto: "Sostituzioni nella sistemazione, a preventivo. 2: la pianta nuova la sceglie lo studio, con la stessa resa nel disegno. Prima di sostituire si cerca la causa (acqua, sole, animali)."
       },
       {
         id: "P21", tipo: "scelta",
@@ -225,6 +260,19 @@ CURA.passi = [
           { v: 0, t: "Decidete voi" }
         ],
         effetto: "1: lavoro a preventivo. 2: calendario delle bagnature consegnato al cliente. 3: passaggi estivi in più (vedi R4)."
+      },
+      {
+        id: "P38", tipo: "scelta", se: "sole",
+        parametro: "Angolo troppo al sole",
+        testo: "Per l'angolo dove il sole batte troppo, la strada che senti più tua:",
+        opzioni: [
+          { v: 1, t: "Un ombrellone: subito e senza lavori" },
+          { v: 2, t: "Una vela ombreggiante" },
+          { v: 3, t: "Un albero che faccia ombra negli anni" },
+          { v: 4, t: "Una struttura fissa, tipo pergola" },
+          { v: 0, t: "Proponetemi voi" }
+        ],
+        effetto: "1: fornitura con il programma. 2-4: soluzione nella sistemazione, a preventivo; 3 si mette a dimora tra novembre e marzo. 0: proposta dello studio dopo un sopralluogo nell'ora di sole peggiore."
       }
     ]
   },
@@ -268,6 +316,17 @@ CURA.passi = [
           { v: 0, t: "Decidete voi" }
         ],
         effetto: "Mesi dei tagli (vedi R3)."
+      },
+      {
+        id: "P41", tipo: "scelta", se: "cocciniglia",
+        parametro: "Siepe, cocciniglia",
+        testo: "La cocciniglia sulla siepe è tornata più volte. D'ora in poi:",
+        opzioni: [
+          { v: 1, t: "Trattamenti programmati, prima che si veda" },
+          { v: 2, t: "Controllo a ogni passaggio, trattamento solo se ricompare" },
+          { v: 0, t: "Decidete voi" }
+        ],
+        effetto: "1: trattamento a fine inverno e controllo con trattamento a fine primavera, quando escono le neanidi (R10). 2: controllo a ogni passaggio, trattamento a parte. Criterio: siepe senza cocciniglia visibile."
       },
       {
         id: "P44", tipo: "scelta", se: "cycas",
@@ -479,6 +538,16 @@ CURA.regole = {
     testo: "Per ogni momento di P25, un passaggio nelle due settimane prima: Pasqua nel mese di Pasqua o in quello prima, inizio estate a giugno, agosto a fine luglio, feste di fine anno a dicembre.",
     mesi: { pasqua: 3, estate: 6, agosto: 7, feste: 12 }
   },
+  R9: {
+    nome: "Taglio del prato",
+    testo: "Se il taglio lo fa lo studio (P48 = 3): da aprile a ottobre, un taglio ogni due-tre settimane, in giornate dedicate oltre ai passaggi del livello. Se lo fa il cliente o un robot: nel programma l'altezza di taglio consigliata per stagione.",
+    mesi: [4, 5, 6, 7, 8, 9, 10]
+  },
+  R10: {
+    nome: "Cocciniglia",
+    testo: "Con P41 = 1: trattamento a fine inverno (febbraio), controllo e trattamento a fine primavera (maggio) sulle neanidi. Prodotti scelti caso per caso, sicuri per gli animali se vale R7.",
+    mesi: [2, 5]
+  },
   R6: {
     nome: "Decidete voi",
     testo: "Ogni risposta 0 si chiude con la scelta dello studio, scritta nel programma. Se le risposte 0 superano la metà, al cliente si manda una proposta unica, senza alternative."
@@ -489,7 +558,8 @@ CURA.regole = {
    finché Domenico non decide altrimenti. */
 CURA.sceltaDelloStudio = {
   P10: 2, P20: 2, P21: 1, P22: 2, P23: 2, P32: 1, P33: 1, P35: 2,
-  P40: 2, P42: 2, P43: 2, P44: 1, P46: 1
+  P40: 2, P42: 2, P43: 2, P44: 1, P46: 1,
+  P26: 2, P41: 1, P47: 1
 };
 
 if (typeof module !== "undefined") module.exports = CURA;
